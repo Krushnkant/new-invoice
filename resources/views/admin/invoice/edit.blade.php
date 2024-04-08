@@ -141,19 +141,19 @@
                 </tr>
                 @if($invConsignee->state_code != $settings->company_statecode)
                     <?php 
-                        $styleForScgst = '';
-                        $styleForIgst = 'display: none;';
-                        $gstAmount = $invoice->sgst_amount;
-                        $gstType = 'csgst';
+                        $styleForIgst = '';
+                        $styleForScgst = 'display: none;'; 
+                        $gstAmount = $invoice->igst_amount;
+                        $gstType = 'igst';
                     ?>
                 @endif
 
                 @if($invConsignee->state_code == $settings->company_statecode)
                     <?php 
-                        $styleForIgst = '';
-                        $styleForScgst = 'display: none;'; 
-                        $gstAmount = $invoice->igst_amount;
-                        $gstType = 'igst';
+                        $styleForScgst = '';
+                        $styleForIgst = 'display: none;';
+                        $gstAmount = $invoice->sgst_amount;
+                        $gstType = 'csgst';
                     ?>
                 @endif
                 <tr class="fullrow sgst-row" style="{{ $styleForScgst }} border-top: 1px solid #e4e4e4;">

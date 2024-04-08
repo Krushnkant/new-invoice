@@ -117,15 +117,7 @@ class InvoiceController extends Controller
         $products = Product::where('estatus',1)->get();
         $html_product = '<option></option>';
         foreach ($products as $product){
-            if ($language == "English"){
-                $title = $product->title_english;
-            }
-            elseif ($language == "Hindi"){
-                $title = $product->title_english." | ".$product->title_hindi;
-            }
-            elseif ($language == "Gujarati"){
-                $title = $product->title_english." | ".$product->title_gujarati;
-            }
+            $title = $product->title;
             $html_product .= '<option value="'.$product->id.'">'.$title.'</option>';
         }
 
@@ -138,11 +130,11 @@ class InvoiceController extends Controller
         $setting = Setting::where('id', 1)->first();
 
         if( $setting->company_statecode === (int) $consignee_statecode ){
-            $gst_type = 'igst';
-            $gst_percentage = $setting->gst_percentage;
-        } else {
             $gst_type = 'csgst';
             $gst_percentage = ($setting->gst_percentage / 2);
+        } else {
+            $gst_type = 'igst';
+            $gst_percentage = $setting->gst_percentage;
         }
         
         return [ 'gst_type' => $gst_type, 'gst_percent' => $gst_percentage ];
@@ -170,9 +162,26 @@ class InvoiceController extends Controller
         } else {
             $igst = $request->gstAmount;
         }
+
+        // add Transporter If not exist
+        $transporterId = Transporter::where('id', $request->transporter_name)->pluck('id')->first();
+        if(!$transporterId){
+
+            $transporterId = Transporter::where('transporter_name', $request->transporter_name)->pluck('id')->first();
+            if(!$transporterId){
+
+                $Transporter = new Transporter();
+                $Transporter->transporter_name = $request->transporter_name;
+                $Transporter->created_at = new \DateTime(null, new \DateTimeZone('Asia/Kolkata'));
+
+                $Transporter->save();
+                $transporterId = $Transporter->id;
+            }
+        }
+
         $invoice->invoice_no = $request->invoice_no;
         $invoice->consignee_id = $request->customer_name;
-        $invoice->transporter_id = $request->transporter_name;
+        $invoice->transporter_id = $transporterId;
         $invoice->invoice_date = date("Y-m-d", strtotime($request->invoice_date));
         $invoice->sub_total = $request->subtotal;
         $invoice->gst_percentage = $request->gstPercentage;
@@ -835,6 +844,13 @@ class InvoiceController extends Controller
                                 if( $settings->company_statecode != $invoice->consignee->state_code ){
                                     
                                     $HTMLContent .= '<tr>
+                                                        <th colspan="6" style="padding:10px 0;border: 1px solid grey;">IGST('.$gstPercent.'%)</th>
+                                                        <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->igst_amount).'</th>
+                                                    </tr>';
+                                    
+                                } else {
+
+                                    $HTMLContent .= '<tr>
                                                         <th colspan="6" style="padding:10px 0;border: 1px solid grey;">SGST('.$gstPercent.'%)</th>
                                                         <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->sgst_amount).'</th>
                                                     </tr>';
@@ -843,13 +859,6 @@ class InvoiceController extends Controller
                                                     <th colspan="6" style="padding:10px 0;border: 1px solid grey;">CGST('.$gstPercent.'%)</th>
                                                     <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->cgst_amount).'</th>
                                                 </tr>';
-                                    
-                                } else {
-
-                                    $HTMLContent .= '<tr>
-                                                        <th colspan="6" style="padding:10px 0;border: 1px solid grey;">IGST('.$gstPercent.'%)</th>
-                                                        <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->igst_amount).'</th>
-                                                    </tr>';
                                 }
 
                                 $HTMLContent .= '<tr>

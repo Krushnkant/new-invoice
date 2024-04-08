@@ -187,7 +187,8 @@ $(document).ready(function() {
     $('#transporter_name').select2({
         width: '100%',
         placeholder: "Select...",
-        allowClear: false
+        allowClear: false,
+        tags: true
     });
 
     $(".item_name").each(function() {
