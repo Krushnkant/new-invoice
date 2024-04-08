@@ -22,7 +22,6 @@ class Setting extends Model
      */
     protected $fillable = [
         'prefix_invoice_no',
-        'invoice_no',
         'company_name',
         'company_logo',
         'company_address',

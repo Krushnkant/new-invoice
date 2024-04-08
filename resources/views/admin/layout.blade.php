@@ -60,7 +60,7 @@
                 <b class="logo-abbr"></b>
                 <span class="logo-compact"></span>
                 <span class="brand-title text-white">
-                    Vedant Invoice
+                    GST Invoice
                     <!-- <img src="{{ url('public/images/logo-text.png') }}" alt=""> -->
                 </span>
             </a>

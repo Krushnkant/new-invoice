@@ -75,13 +75,17 @@ class InvoiceController extends Controller
                         <select name="item_name" id="item_name'.$next_item.'" class="item_name">
                             '.$html_product.'
                         </select>
-                        <label id="item_name'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="item_name"></label>
+                        <label id="item_name'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="item_name'.$next_item.'"></label>
                         <a class="delete" onclick="removeRow(\'table-row-'.$next_item.'\',0)" href="javascript:;" title="Remove row">X</a>
                     </div>
                 </td>
                 <td width="100px">
+                    <input class="form-control hsn" id="hsn'.$next_item.'" name="hsn" type="text">
+                    <label id="hsn'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="hsn'.$next_item.'"></label>
+                </td>
+                <td width="100px">
                     <input class="form-control packing_qty" id="packing_qty'.$next_item.'" name="packing_qty" type="number" min="1">
-                    <label id="packing_qty'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="packing_qty"></label>
+                    <label id="packing_qty'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="packing_qty'.$next_item.'"></label>
                 </td>
                 <td width="100px">
                     <select name="packing_name" id="packing_name_'.$next_item.'" class="packing_name">
@@ -92,7 +96,7 @@ class InvoiceController extends Controller
                 </td>
                 <td width="100px">
                     <input class="form-control weight_of_packing" id="weight_of_packing'.$next_item.'" name="weight_of_packing" type="number" min="1">
-                    <label id="weight_of_packing'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="weight_of_packing"></label>
+                    <label id="weight_of_packing'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="weight_of_packing'.$next_item.'"></label>
                 </td>
                 <td width="100px">
                     <div class="prse text-center"><span id="quantity'.$next_item.'" class="quantity">0</span></div>
@@ -100,7 +104,7 @@ class InvoiceController extends Controller
                 </td>
                 <td width="100px">
                     <input class="form-control unitcost cost" placeholder="0.00" type="number" id="price'.$next_item.'" name="price" value="">
-                    <label id="price'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="price"></label>
+                    <label id="price'.$next_item.'-error" class="error invalid-feedback animated fadeInDown" for="price'.$next_item.'"></label>
                 </td>
                 <td class="subt_price"><div class="prse text-right"><i class="fa fa-inr" aria-hidden="true"></i><span class="price proprice sub_price">0.00</span></div></td>
            </tr>';
@@ -146,7 +150,8 @@ class InvoiceController extends Controller
 
     public function change_product_price(Request $request){
         // $price = ProductPrice::where('user_id',$request->user_id)->where('product_id',$request->product_id)->pluck('price')->first();
-        $price = Product::where('id',$request->product_id)->pluck('price')->first();
+        // $price = Product::where('id',$request->product_id)->pluck('price')->first();
+        $price = Product::where('id',$request->product_id)->first();
         return $price;
     }
 
@@ -191,11 +196,11 @@ class InvoiceController extends Controller
                 array_push($deleted_product_item_ids, $invoice_item->product_id);
                 //update stock
                 
-                if (!in_array($invoice_item->product_id,explode(",",$request->product_ids))){
-                    $product = Product::find($invoice_item->product_id);
-                    $product->stock = $product->stock + $invoice_item->quantity;
-                    $product->save();
-                }
+                // if (!in_array($invoice_item->product_id, explode(",",$request->product_ids))){
+                //     $product = Product::find($invoice_item->product_id);
+                //     $product->stock = $product->stock + $invoice_item->quantity;
+                //     $product->save();
+                // }
 
                 $invoice_item->save();
                 $invoice_item->delete();
@@ -205,10 +210,30 @@ class InvoiceController extends Controller
         for ($i = 1; $i <= $request->total_items; $i++){
             $form = 'InvoiceItemForm'.$i;
             $item = json_decode($request[$form],true);
+
+            $productId = Product::where('id', $item['item_name'])->pluck('id')->first();
+            if($productId){
+                $productId = $item['item_name'];
+            } else {
+                
+                $productId = Product::where('title', $item['item_name'])->pluck('id')->first();
+
+                if(!$productId){
+
+                    $Product = new Product();
+                    $Product->title = $item['item_name'];
+                    $Product->hsn_code = $item['hsn'];
+                    $Product->price = $item['price'];
+                    $Product->created_at = new \DateTime(null, new \DateTimeZone('Asia/Kolkata'));
+
+                    $Product->save();
+                    $productId = $Product->id;
+                }
+            }
            
             $invoice_item = new InvoiceItem();
             $invoice_item->invoice_id = $invoice->id;
-            $invoice_item->product_id = $item['item_name'];
+            $invoice_item->product_id = $productId;
             $invoice_item->price = $item['price'];
             $invoice_item->packing_qty = $item['packing_qty'];
             $invoice_item->packingType = $item['packing_name'];
@@ -219,47 +244,47 @@ class InvoiceController extends Controller
 
             $itemQty = (float) $invoice_item->quantity;
             //update stock
-            if ($request->action == "add") {
-                $product = Product::find($invoice_item->product_id);
-                $product->stock = $product->stock - $itemQty;
-                $product->save();
-            } elseif ($request->action == "update"){
-                //dd($deleted_product_item_ids);
-                $no = 1;
-                foreach ($deleted_product_ids as $deleted_product_id) {
-                    if ($deleted_product_id['product_id'] == $invoice_item->product_id && $deleted_product_id['qty'] != $itemQty){
-                        if ($itemQty > $deleted_product_id['qty']){
-                            $qty = $itemQty - $deleted_product_id['qty'];
-                            $product = Product::find($invoice_item->product_id);
-                            $product->stock = $product->stock - $qty;
-                            $product->save();
-                        }
-                        elseif ($itemQty < $deleted_product_id['qty']){
-                            $qty = $deleted_product_id['qty'] - $itemQty;
-                            $product = Product::find($invoice_item->product_id);
-                            $product->stock = $product->stock + $qty;
-                            $product->save();
-                        }
-                    }
+            // if ($request->action == "add") {
+            //     $product = Product::find($invoice_item->product_id);
+            //     $product->stock = $product->stock - $itemQty;
+            //     $product->save();
+            // } elseif ($request->action == "update"){
+            //     //dd($deleted_product_item_ids);
+            //     $no = 1;
+            //     foreach ($deleted_product_ids as $deleted_product_id) {
+            //         if ($deleted_product_id['product_id'] == $invoice_item->product_id && $deleted_product_id['qty'] != $itemQty){
+            //             if ($itemQty > $deleted_product_id['qty']){
+            //                 $qty = $itemQty - $deleted_product_id['qty'];
+            //                 $product = Product::find($invoice_item->product_id);
+            //                 $product->stock = $product->stock - $qty;
+            //                 $product->save();
+            //             }
+            //             elseif ($itemQty < $deleted_product_id['qty']){
+            //                 $qty = $deleted_product_id['qty'] - $itemQty;
+            //                 $product = Product::find($invoice_item->product_id);
+            //                 $product->stock = $product->stock + $qty;
+            //                 $product->save();
+            //             }
+            //         }
                     
-                    // if($no == 1){
-                    //     if ($deleted_product_id['product_id'] != $item['item_name'] ){
-                    //             $qty = $item['quantity'];
-                    //             $product = Product::find($item['item_name']);
-                    //             $product->stock = $product->stock - $qty;
-                    //             $product->save();
-                    //     }
-                    // }
-                    // $no++;
-                }
+            //         // if($no == 1){
+            //         //     if ($deleted_product_id['product_id'] != $item['item_name'] ){
+            //         //             $qty = $item['quantity'];
+            //         //             $product = Product::find($item['item_name']);
+            //         //             $product->stock = $product->stock - $qty;
+            //         //             $product->save();
+            //         //     }
+            //         // }
+            //         // $no++;
+            //     }
 
-                if (!in_array($item['item_name'], $deleted_product_item_ids)){
-                    $qty = $item['quantity'];
-                    $product = Product::find($item['item_name']);
-                    $product->stock = $product->stock - $qty;
-                    $product->save();
-                }
-            }
+            //     if (!in_array($item['item_name'], $deleted_product_item_ids)){
+            //         $qty = $item['quantity'];
+            //         $product = Product::find($item['item_name']);
+            //         $product->stock = $product->stock - $qty;
+            //         $product->save();
+            //     }
+            // }
         }
 
         // if ($request->action == "add") {
@@ -276,10 +301,10 @@ class InvoiceController extends Controller
             $columns = array(
                 0 =>'id',
                 1 =>'invoice_no',
-                2=> 'customer_info',
-                3=> 'amount',
-                4=> 'invoice_date',
-                5=> 'action',
+                2 => 'customer_info',
+                3 => 'amount',
+                4 => 'invoice_date',
+                5 => 'action',
             );
 
             $limit = $request->input('length');

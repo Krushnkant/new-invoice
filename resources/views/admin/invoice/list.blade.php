@@ -195,7 +195,8 @@ $(document).ready(function() {
         $('#'+id).select2({
             width: '100%',
             placeholder: "Select...",
-            allowClear: false
+            allowClear: false,
+            tags: true
         });
     });
 
@@ -233,7 +234,8 @@ $(document).ready(function() {
                 $('#item_name'+res['next_item']).select2({
                     width: '100%',
                     placeholder: "Select...",
-                    allowClear: false
+                    allowClear: false,
+                    tags: true
                 });
                 $('#packing_name_'+res['next_item']).select2({
                     width: '100%',
@@ -405,7 +407,8 @@ $('body').on('change', '.item_name', function () {
         url: "{{ route('admin.invoice.change_product_price') }}",
         data: {_token: '{{ csrf_token() }}', product_id: product_id},
         success: function (res) {
-            $(thi).parents('.item-row').find('.unitcost').val(res);
+            $(thi).parents('.item-row').find('.unitcost').val(res.price);
+            $(thi).parents('.item-row').find('.hsn').val(res.hsn_code);
             $(thi).parents('.item-row').find('.unitcost').trigger('change');
         },
         error: function (data) {
@@ -419,7 +422,7 @@ $('body').on('change', '.unitcost', function () {
     var price = $(this).val();
     var qty = $(this).parents('.item-row').find('.quantity').html();
 
-    var final_price_item = (price * qty);
+    var final_price_item = (price * qty).toFixed(2);
 
     if(final_price_item > 0) {
         $(this).parents('.item-row').find('.proprice').html(final_price_item);
@@ -490,7 +493,7 @@ function update_total() {
 
     $(".price").each(function() {
         if( $(this).html() > 0 ) {
-            sub_total = parseFloat(sub_total) + parseFloat($(this).html());
+            sub_total = (parseFloat(sub_total) + parseFloat($(this).html()));
         }
     });
     gstAmount = (sub_total * gstPercentage) / 100;
@@ -534,6 +537,7 @@ $('body').on('click', '#invoice_submit', function () {
             var thi = $(this);
             var InvoiceItemForm = {
                 "item_name":$(thi).find('.item_name').val(),
+                "hsn":$(thi).find('.hsn').val(),
                 "packing_qty":$(thi).find('.packing_qty').val(),
                 "packing_name":$(thi).find('.packing_name').val(),
                 "weight_of_packing":$(thi).find('.weight_of_packing').val(),
@@ -656,11 +660,13 @@ function validateInvoiceItems(action) {
     var isValidUnitCost = false;
     var isValidPackingQty = false;
     var isValidPackingWeight = false;
+    var isValidHsn = false;
 
     var itemNameArray = [];
     var unitCostArray = [];
     var packingQtyArray = [];
     var weightArray = [];
+    var hsnArray = [];
 
     $(".item_name").each(function() {
         var itemFieldVal = $(this).val();
@@ -669,35 +675,50 @@ function validateInvoiceItems(action) {
         if( itemFieldVal === '' ){
             $("#"+itemFieldId+"-error").html("Please Select Item").show();
             itemNameArray.push(0);
-        } else {
-            $("#"+itemFieldId+"-error").html("").hide();
-            var check_stock = $.ajax({
-                                type: 'POST',
-                                url: "{{ route('admin.check_stock') }}",
-                                data: { 
-                                    _token: '{{ csrf_token() }}', 
-                                    product_id: itemFieldVal, 
-                                    quantity: $('#quantity'+rowNo).html(), 
-                                    action: action 
-                                },
-                                async:false,
-                                success: function (res) {
+        } // else {
+            // $("#"+itemFieldId+"-error").html("").hide();
+            // Check Stock of Selected Items
+            // var check_stock = $.ajax({
+            //                     type: 'POST',
+            //                     url: "{{ route('admin.check_stock') }}",
+            //                     data: { 
+            //                         _token: '{{ csrf_token() }}', 
+            //                         product_id: itemFieldVal, 
+            //                         quantity: $('#quantity'+rowNo).html(), 
+            //                         action: action 
+            //                     },
+            //                     async:false,
+            //                     success: function (res) {
 
-                                },
-                                error: function (data) {
+            //                     },
+            //                     error: function (data) {
 
-                                }
-                            }).responseText;
-            if(check_stock != 1){
-                $('#quantity'+rowNo+'-error').show().html("Item is not available in stock");
-                itemNameArray.push(0);
-            } else {
-                $('#quantity'+rowNo+'-error').hide().html("");
-            }
-        }
+            //                     }
+            //                 }).responseText;
+            // if(check_stock != 1){
+            //     $('#quantity'+rowNo+'-error').show().html("Item is not available in stock");
+            //     itemNameArray.push(0);
+            // } else {
+            //     $('#quantity'+rowNo+'-error').hide().html("");
+            // }
+        // }
     });
     if(itemNameArray.length === 0) {
         isValidItemName = true;
+    }
+    
+    $(".hsn").each(function() {
+        var hsnFieldVal = $(this).val();
+        var hsnFieldId = $(this).attr('id');
+        if( hsnFieldVal === '' ){
+            $("#"+hsnFieldId+"-error").html("Please Provide a HSN Code").show();
+            hsnArray.push(0);
+        } else {
+            $("#"+hsnFieldId+"-error").html("").hide();
+        }
+    });
+    if(hsnArray.length === 0) {
+        isValidHsn = true;
     }
 
     $(".packing_qty").each(function() {
@@ -742,7 +763,7 @@ function validateInvoiceItems(action) {
         isValidUnitCost = true;
     }
 
-    if( isValidItemName === true && isValidUnitCost === true && isValidPackingQty === true && isValidPackingWeight === true ){
+    if( isValidItemName === true && isValidHsn == true && isValidUnitCost === true && isValidPackingQty === true && isValidPackingWeight === true ){
         return true;
     }
 

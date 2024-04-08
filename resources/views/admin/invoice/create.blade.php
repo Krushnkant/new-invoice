@@ -64,6 +64,7 @@
             <thead>
                 <tr>
                     <th>Item</th>
+                    <th width="100px">HSN</th>
                     <th width="100px">Packing Qty</th>
                     <th width="100px">Packing</th>
                     <th width="100px">Weight</th>
@@ -82,8 +83,13 @@
                                     <option value="{{ $product->id }}">{{ $product->title }}</option>
                                 @endforeach
                             </select>
+                            <!-- <input class="form-control item_name" id="item_name1" name="item_name1" type="text"> -->
                             <label id="item_name1-error" class="error invalid-feedback animated fadeInDown" for="item_name1"></label>
                         </div>
+                    </td>
+                    <td width="100px">
+                        <input class="form-control hsn" id="hsn1" name="hsn" type="text">
+                        <label id="hsn1-error" class="error invalid-feedback animated fadeInDown" for="hsn1"></label>
                     </td>
                     <td width="100px">
                         <input class="form-control packing_qty" id="packing_qty1" name="packing_qty" type="number" min="1">
@@ -115,28 +121,28 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <button type="button" class="btn btn-light" id="addrow" style="margin-bottom: 5px;">New Item</button>
                     </td>
                 </tr>
                 <tr class="fullrow" style="border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">Sub Total</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">Sub Total</td>
                     <td class="total-value"><div id="subtotal_html">0.00</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <tr class="fullrow sgst-row" style="display: none; border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">SGST(<span id="sgst_apply_percent"></span>%)</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">SGST(<span id="sgst_apply_percent"></span>%)</td>
                     <td class="total-value"><div id="sgst_html">0.00</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <tr class="fullrow cgst-row" style="display: none; border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">CGST(<span id="cgst_apply_percent"></span>%)</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">CGST(<span id="cgst_apply_percent"></span>%)</td>
                     <td class="total-value"><div id="cgst_html">0.00</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <tr class="fullrow igst-row" style="display: none; border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">IGST(<span id="igst_apply_percent"></span>%)</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">IGST(<span id="igst_apply_percent"></span>%)</td>
                     <td class="total-value"><div id="igst_html">0.00</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <tr class="fullrow" style="border-top: 1px solid #e4e4e4; border-bottom: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">Total</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">Total</td>
                     <td class="total-value"><div id="grandTotal_html">0.00</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <!-- <tr class="fullrow">

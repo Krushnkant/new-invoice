@@ -15,7 +15,7 @@ class SettingsSeeder extends Seeder
     public function run()
     {
         Setting::create([
-            'invoice_no' => 1,
+            'estatus' => 1,
         ]);
     }
 }

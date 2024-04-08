@@ -65,6 +65,7 @@
             <thead>
                 <tr>
                     <th>Item</th>
+                    <th width="100px">HSN</th>
                     <th width="100px">Packing Qty</th>
                     <th width="100px">Packing</th>
                     <th width="100px">Weight</th>
@@ -74,7 +75,7 @@
                 </tr>
             </thead>
             <tbody id="itemstbody">
-                <?php $i = 1; ?>
+                <?php $i = 1; $hsn = ''; ?>
                 @foreach($invoice->invoice_item as $invoice_item)
                     <tr class="item-row" id="table-row-{{ $i }}">
                         <td class="item-name">
@@ -82,6 +83,11 @@
                                 <select name="item_name" id="item_name{{ $i }}" class="item_name">
                                     <option></option>
                                     @foreach($products as $product)
+                                        <?php 
+                                            if($invoice_item->product_id == $product->id){
+                                                $hsn = $product->hsn_code;
+                                            }
+                                        ?>
                                         <option value="{{ $product->id }}" @if($invoice_item->product_id==$product->id) selected @endif>{{ $product->title }}</option>
                                     @endforeach
                                 </select>
@@ -90,6 +96,10 @@
                                     <a class="delete" onclick="removeRow('table-row-{{ $i }}',0)" href="javascript:;" title="Remove row">X</a>
                                 @endif
                             </div>
+                        </td>
+                        <td width="100px">
+                            <input class="form-control hsn" id="hsn{{ $i }}" name="hsn" type="text" value="{{ $hsn }}">
+                            <label id="hsn{{ $i }}-error" class="error invalid-feedback animated fadeInDown" for="hsn{{ $i }}"></label>
                         </td>
                         <td width="100px">
                             <input class="form-control packing_qty" id="packing_qty{{ $i }}" name="packing_qty" type="number" min="1" value="{{ $invoice_item->packing_qty }}">
@@ -121,12 +131,12 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <button type="button" class="btn btn-light" id="addrow" style="margin-bottom: 5px;">New Item</button>
                     </td>
                 </tr>
                 <tr class="fullrow" style="border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">Sub Total</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">Sub Total</td>
                     <td class="total-value"><div id="subtotal_html">{{ IND_money_format($invoice->sub_total) }}</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 @if($invConsignee->state_code != $settings->company_statecode)
@@ -147,20 +157,20 @@
                     ?>
                 @endif
                 <tr class="fullrow sgst-row" style="{{ $styleForScgst }} border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">SGST(<span id="sgst_apply_percent">{{ $invoice->gst_percentage }}</span>%)</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">SGST(<span id="sgst_apply_percent">{{ $invoice->gst_percentage }}</span>%)</td>
                     <td class="total-value"><div id="sgst_html">{{ IND_money_format($invoice->sgst_amount) }}</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <tr class="fullrow cgst-row" style="{{ $styleForScgst }} border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">CGST(<span id="cgst_apply_percent">{{ $invoice->gst_percentage }}</span>%)</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">CGST(<span id="cgst_apply_percent">{{ $invoice->gst_percentage }}</span>%)</td>
                     <td class="total-value"><div id="cgst_html">{{ IND_money_format($invoice->cgst_amount) }}</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 <tr class="fullrow igst-row" style="{{ $styleForIgst }} border-top: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">IGST(<span id="igst_apply_percent">{{ $invoice->gst_percentage }}</span>%)</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">IGST(<span id="igst_apply_percent">{{ $invoice->gst_percentage }}</span>%)</td>
                     <td class="total-value"><div id="igst_html">{{ IND_money_format($invoice->igst_amount) }}</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
                 
                 <tr class="fullrow" style="border-top: 1px solid #e4e4e4; border-bottom: 1px solid #e4e4e4;">
-                    <td class="total-line" colspan="6" style="border-right: 1px solid #e4e4e4;">Total</td>
+                    <td class="total-line" colspan="7" style="border-right: 1px solid #e4e4e4;">Total</td>
                     <td class="total-value"><div id="grandTotal_html">{{ IND_money_format($invoice->final_amount) }}</div><i class="fa fa-inr" aria-hidden="true"></i></td>
                 </tr>
             </tfoot>
