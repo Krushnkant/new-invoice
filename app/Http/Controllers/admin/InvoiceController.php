@@ -399,7 +399,7 @@ class InvoiceController extends Controller
                     $table .= '<th>Item Name</th>';
                     $table .= '<th style="text-align: center">Packing</th>';
                     $table .= '<th style="text-align: center">Quantity</th>';
-                    $table .= '<th style="text-align: center">Price</th>';
+                    $table .= '<th style="text-align: center">Rate</th>';
                     $table .= '<th style="text-align: right">Final Price</th>';
                     $table .= '</tr>';
                     $item = 1;

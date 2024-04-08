@@ -70,7 +70,7 @@
                     <th width="100px">Packing</th>
                     <th width="100px">Weight</th>
                     <th width="100px">Quantity (Kg)</th>
-                    <th width="100px">Unit Cost</th>
+                    <th width="100px">Rate</th>
                     <th class="text-right">Price</th>
                 </tr>
             </thead>
