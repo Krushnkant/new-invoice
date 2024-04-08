@@ -24,6 +24,7 @@ class CreateInvoicesTable extends Migration
             $table->decimal('cgst_amount', 10, 2)->default(0);
             $table->decimal('igst_amount', 10, 2)->default(0);
             $table->decimal('final_amount', 10, 2)->default(0);
+            $table->float('gst_percentage')->default(0);
             $table->text('transport_mode');
             $table->date('invoice_date');
             // $table->float('total_qty')->default(0);
