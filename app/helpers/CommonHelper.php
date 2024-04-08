@@ -88,7 +88,7 @@ function numberTowords($number) {
         $amountWord = $result[0] . "Rupees ";
     }
     if($result[1] != "" && $point){
-        $amountWord .= $result[1] . "Paise";
+        $amountWord .= $result[1] . "Paisa";
     } 
     $amountWord .= " Only";
 
