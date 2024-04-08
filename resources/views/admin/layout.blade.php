@@ -151,11 +151,11 @@
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="{{ route('admin.product_stock.list') }}" aria-expanded="false">
                         <i class="fa fa-industry"></i><span class="nav-text">Stock</span>
                     </a>
-                </li>
+                </li> -->
 
                 {{--<li>
                     <a href="{{ route('admin.product_prices.list') }}" aria-expanded="false">
