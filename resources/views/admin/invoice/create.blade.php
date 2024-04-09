@@ -39,6 +39,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-2">
+                <div class="form-group row">
+                    <label class="col-lg-12 col-form-label" for="place_of_supply">Place of Supply <span class="text-danger">*</span></label>
+                    <div class="col-lg-12">
+                        <input class="form-control" type="text" id="place_of_supply" name="place_of_supply" placeholder="Place of Supply" value="">
+                        <label id="place_of_supply-error" class="error invalid-feedback animated fadeInDown" for="place_of_supply"></label>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-2 ml-auto">
                 <div class="form-group row mb-0">
                     <label class="col-lg-12 col-form-label" for="invoice_no">Invoice No <span class="text-danger">*</span></label>

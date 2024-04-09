@@ -28,7 +28,7 @@ class Setting extends Model
         'company_mobile_no',
         'company_gstno',
         'company_panno',
-        'place_of_supply',
+        // 'place_of_supply',
         'company_statecode',
         'gst_percentage',
         'msme_no',

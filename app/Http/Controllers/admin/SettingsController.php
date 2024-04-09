@@ -28,7 +28,7 @@ class SettingsController extends Controller
             'company_address.required' =>'Please provide a Company Address',
             'company_mobile_no.required' =>'Please provide a Company Mobile Number',
             'gst_percentage.numeric' =>'Please provide a Numeric value',
-            'place_of_supply.required' =>'Please provide a Place of Supply',
+            // 'place_of_supply.required' =>'Please provide a Place of Supply',
             'gst_percentage.required' =>'Please provide a GST Percentage',
             'company_statecode.required' =>'Please provide a State Code',
             'company_statecode.numeric' =>'Please provide a Numeric Value',
@@ -44,7 +44,7 @@ class SettingsController extends Controller
             'company_address' => 'required',
             'company_mobile_no' => 'required|numeric|digits:10',
             'gst_percentage' => 'required|numeric',
-            'place_of_supply' => 'required',
+            // 'place_of_supply' => 'required',
             'company_statecode' => 'required|numeric',
             'gst_no' => 'required',
             'pan_no' => 'required',
@@ -66,7 +66,7 @@ class SettingsController extends Controller
         $Settings->company_gstno = $request->gst_no;
         $Settings->company_panno = $request->pan_no;
         $Settings->gst_percentage = $request->gst_percentage;
-        $Settings->place_of_supply = $request->place_of_supply;
+        // $Settings->place_of_supply = $request->place_of_supply;
         $Settings->company_statecode = $request->company_statecode;
         $Settings->msme_no = $request->msme_no;
 

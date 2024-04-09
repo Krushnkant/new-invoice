@@ -604,12 +604,14 @@ function validateInvoice() {
     var isValidParty = false;
     var isValidTransporter = false;
     var isValidTransportMode = false;
+    var isValidPlaceOfSupply = false;
     var isValidInvoice = false;
     var isValidInvoiceDate = false;
 
     var partyVal = $("#customer_name").val();
     var transporterVal = $("#transporter_name").val();
     var transportModeVal = $("#transport_mode").val();
+    var placeOfSupplyVal = $("#place_of_supply").val();
     var invoiceVal = $("#invoice_no").val();
     var invoiceDateVal = $("#invoice_date").val();
 
@@ -628,10 +630,17 @@ function validateInvoice() {
     }
 
     if( transportModeVal === '' ){
-        $("#transport_mode-error").html("Please Provide Transport Mode").show();
+        $("#transport_mode-error").html("Please Provide a Transport Mode").show();
     } else {
         $("#transport_mode-error").html("").hide();
         isValidTransportMode = true;
+    }
+
+    if( placeOfSupplyVal === '' ){
+        $("#place_of_supply-error").html("Please Provide a Place of Supply").show();
+    } else {
+        $("#place_of_supply-error").html("").hide();
+        isValidPlaceOfSupply = true;
     }
 
     if( invoiceVal === '' ){
@@ -648,7 +657,7 @@ function validateInvoice() {
         isValidInvoiceDate = true;
     }
 
-    if( isValidParty === true && isValidTransporter === true && isValidTransportMode === true && isValidInvoice === true && isValidInvoiceDate === true ){
+    if( isValidParty === true && isValidTransporter === true && isValidTransportMode === true && isValidInvoice === true && isValidInvoiceDate === true && isValidPlaceOfSupply === true ){
         return true;
     }
 

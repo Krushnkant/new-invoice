@@ -21,7 +21,6 @@ class Invoice extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'language',
         'invoice_no',
         'consignee_id',
         'transporter_id',
@@ -34,6 +33,7 @@ class Invoice extends Model
         'invoice_date',
         'final_amount',
         'estatus',
+        'place_of_supply'
     ];
 
     public function invoice_item(){

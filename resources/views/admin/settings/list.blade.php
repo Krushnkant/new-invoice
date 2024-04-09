@@ -79,10 +79,10 @@
                                         <th style="width: 50%">Company State Code</th>
                                         <td><span id="company_statecode_val">{{ $Settings->company_statecode }}</span></td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <th style="width: 50%">Place of Supply</th>
                                         <td><span id="place_of_supply_val">{{ $Settings->place_of_supply }}</span></td>
-                                    </tr>
+                                    </tr> -->
                                     </tbody>
                                 </table>
                             </div>
@@ -166,12 +166,12 @@
                                 <input type="text" class="form-control input-flat" id="company_statecode" name="company_statecode" placeholder="">
                                 <div id="company_statecode-error" class="invalid-feedback animated fadeInDown" style="display: none;"></div>
                             </div>
-                            <div class="col-sm-6 form-group">
+                            <!-- <div class="col-sm-6 form-group">
                                 <label class="col-form-label" for="place_of_supply">Place of Supply <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control input-flat" id="place_of_supply" name="place_of_supply" placeholder="">
                                 <div id="place_of_supply-error" class="invalid-feedback animated fadeInDown" style="display: none;"></div>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="form-group">
                             <label class="col-form-label" for="Prefix for Invoice No">Prefix for Invoice No
@@ -213,7 +213,7 @@
         $('#company_address-error').html("");
         $('#gst_percentage-error').html("");
         $('#msme_no-error').html("");
-        $('#place_of_supply-error').html("");
+        // $('#place_of_supply-error').html("");
         $('#gst_no-error').html("");
         $('#pan_no-error').html("");
         $('#company_statecode-error').html("");
@@ -231,7 +231,7 @@
             $('#company_mobile_no').val(data.company_mobile_no);
             $('#gst_percentage').val(data.gst_percentage);
             $('#msme_no').val(data.msme_no);
-            $('#place_of_supply').val(data.place_of_supply);
+            // $('#place_of_supply').val(data.place_of_supply);
             $('#company_statecode').val(data.company_statecode);
             $('#gst_no').val(data.company_gstno);
             $('#pan_no').val(data.company_panno);
@@ -322,21 +322,21 @@
                         }
                     }
 
-                    if (res.errors.place_of_supply) {
+                    if (res.errors.pan_no) {
                         $('#pan_no-error').show().text(res.errors.pan_no);
                     } else {
-                        if (regexPan.test($("#gst_no").val())) {
+                        if (regexPan.test($("#pan_no").val())) {
                             $('#pan_no-error').hide();
                         } else {
                             $('#pan_no-error').show().text('Please enter a valid PAN No');
                         }
                     }
 
-                    if (res.errors.place_of_supply) {
-                        $('#place_of_supply-error').show().text(res.errors.place_of_supply);
-                    } else {
-                        $('#place_of_supply-error').hide();
-                    }
+                    // if (res.errors.place_of_supply) {
+                    //     $('#place_of_supply-error').show().text(res.errors.place_of_supply);
+                    // } else {
+                    //     $('#place_of_supply-error').hide();
+                    // }
 
                     if (res.errors.company_statecode) {
                         $('#company_statecode-error').show().text(res.errors.company_statecode);
@@ -360,7 +360,7 @@
                     $("#company_mobile_no_val").html(res.Settings.company_mobile_no);
                     $("#gst_percentage_val").html(res.Settings.gst_percentage);
                     $("#msme_no_val").html(res.Settings.msme_no);
-                    $("#place_of_supply_val").html(res.Settings.place_of_supply);
+                    // $("#place_of_supply_val").html(res.Settings.place_of_supply);
                     $("#company_statecode_val").html(res.Settings.company_statecode);
                     $("#company_gstno_val").html(res.Settings.company_gstno);
                     $("#company_panno_val").html(res.Settings.company_panno);

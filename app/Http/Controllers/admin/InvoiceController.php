@@ -190,6 +190,7 @@ class InvoiceController extends Controller
         $invoice->igst_amount = $igst;
         $invoice->final_amount = $request->grandTotal;
         $invoice->transport_mode = $request->transport_mode;
+        $invoice->place_of_supply = $request->place_of_supply;
         $invoice->save();
 
         $deleted_product_ids = array();
@@ -678,7 +679,7 @@ class InvoiceController extends Controller
                                     '.$image.'
                                 </td>
                                 <td style="width: 50%; padding:5px 0 0;" colspan="3">
-                                	<h3 style="text-align: left; font-size: 25pt; margin: 0;">'.$settings->company_name.'</h3>
+                                	<h3 style="text-align: left; font-size: 22pt; margin: 0; text-transform: uppercase;">'.$settings->company_name.'</h3>
                                 </td>
                                 <td style="background: lightgray; padding: 10px 0px 0px 0px; text-align: center;" colspan="2">
                                 	<h5 style="font-size: 14pt;">Tax Invoice</h5>
@@ -793,7 +794,7 @@ class InvoiceController extends Controller
                                                 Place of Supply:
                                             </td>
                                             <td style=" padding: 2px 0; font-size: 10pt;">
-                                                '.$settings->place_of_supply.'
+                                                '.$invoice->place_of_supply.'
                                             </td>
                                         </tr>
                                     </table>
@@ -930,8 +931,11 @@ class InvoiceController extends Controller
 
         $HTMLContent .= '<table cellspacing="0" style="width: 100%; margin-top: 0px; padding-bottom: 40px">
                             <tr>
-                                <td  style="padding-top: 50px;padding-bottom: 10px; width :50%; border-bottom: solid 1px gray; text-align:left; color:gray;">Customer Signature</td>
-                                <td  style="padding-top: 50px;padding-bottom: 10px; width :50%; border-bottom: solid 1px gray; text-align:right; color:gray;"><b>For, '.$settings->company_name.'</b></td>
+                                <td colspan="2" style="text-align:right; color:gray; font-size: 14pt; text-transform: uppercase;"><b>'.$settings->company_name.'</b></td>
+                            </tr>
+                            <tr>
+                                <td  style="padding-top: 60px;padding-bottom: 10px; width :50%; border-bottom: solid 1px gray; text-align:left; color:gray;">Customer Signature</td>
+                                <td  style="padding-top: 60px;padding-bottom: 10px; width :50%; border-bottom: solid 1px gray; text-align:right; color:gray;"><b>Authorised Signatory</b></td>
                             </tr>
                         </table>';
         $HTMLContent .= '</htmlpagefooter>

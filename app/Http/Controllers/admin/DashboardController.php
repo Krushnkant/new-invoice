@@ -26,8 +26,6 @@ class DashboardController extends Controller
         $fromDate = $fromYear.'-04-01';
         $toDate = $toYear.'-03-31';
 
-        $customers = User::where('role',2)->count();
-        $products = Product::count();
         $monthlyInvoice = Invoice::whereYear("created_at", Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->count();
         $yearlyInvoice = Invoice::whereBetween('created_at', [$fromDate, $toDate])->count();
         $monthlySales = Invoice::whereYear("created_at", Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('final_amount');

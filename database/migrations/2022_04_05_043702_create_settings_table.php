@@ -24,7 +24,7 @@ class CreateSettingsTable extends Migration
             $table->text('company_gstno')->nullable();
             $table->text('company_panno')->nullable();
             $table->text('msme_no')->nullable();
-            $table->text('place_of_supply')->nullable();
+            // $table->text('place_of_supply')->nullable();
             $table->integer('company_statecode')->default(0);
             $table->float('gst_percentage')->default(0);
             $table->integer('estatus')->default(1)->comment('1->Active,2->Deactive,3->Deleted,4->Pending');
