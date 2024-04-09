@@ -13,10 +13,25 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function index(){
+
+        $current_month = date('m');
+        $firstThreeMonthsArr = ['01', '02', '03'];
+        if(in_array($current_month, $firstThreeMonthsArr)){
+            $fromYear = date('Y') - 1;
+            $toYear = date('Y');
+        } else {
+            $fromYear = date('Y'); // Get the current year
+            $toYear = date('Y') + 1;
+        }
+        $fromDate = $fromYear.'-04-01';
+        $toDate = $toYear.'-03-31';
+
         $customers = User::where('role',2)->count();
         $products = Product::count();
-        $invoice_today = Invoice::whereRaw("DATE(created_at) = '".date('Y-m-d')."'")->count();
-        $amount_invoice_today = Invoice::whereRaw("DATE(created_at) = '".date('Y-m-d')."'")->sum('final_amount');
+        $monthlyInvoice = Invoice::whereYear("created_at", Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->count();
+        $yearlyInvoice = Invoice::whereBetween('created_at', [$fromDate, $toDate])->count();
+        $monthlySales = Invoice::whereYear("created_at", Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('final_amount');
+        $yearlySales = Invoice::whereBetween('created_at', [$fromDate, $toDate])->sum('final_amount');
 
         $record = Invoice::select(DB::raw("COUNT(*) as count"), DB::raw("final_amount as amount"), \DB::raw("DATE(created_at) as date"))
             ->where('created_at', '>', Carbon::today()->subDay(6))
@@ -33,6 +48,6 @@ class DashboardController extends Controller
 //        $data = $chart_data['data'];
 //        dd($chart_data,$labels,$data);
 
-        return view('admin.dashboard',compact('customers','products','invoice_today','amount_invoice_today','final_chart_data'));
+        return view('admin.dashboard',compact('yearlyInvoice','monthlyInvoice','monthlySales','yearlySales','final_chart_data'));
     }
 }

@@ -1,6 +1,17 @@
 @extends('admin.layout')
 
 @section('content')
+    <?php 
+    $current_month = date('m');
+    $firstThreeMonthsArr = ['01', '02', '03'];
+    if(in_array($current_month, $firstThreeMonthsArr)){
+        $fromYear = date('Y') - 1;
+        $toYear = date('Y');
+    } else {
+        $fromYear = date('Y'); // Get the current year
+        $toYear = date('Y') + 1;
+    }
+    ?>
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
@@ -13,58 +24,51 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-lg-6 col-md-6 col-sm-12 col-xl-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-3">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-people"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ $customers }}</h2>
-                                <h5 class="card-widget__subtitle">Total Customers</h5>
-                            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-1">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Invoice</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{ $monthlyInvoice }}</h2>
+                            <p class="text-white mb-0">{{ date("M, Y") }}</p>
                         </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-6 col-md-6 col-sm-12 col-xl-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-tag"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ $products }}</h2>
-                                <h5 class="card-widget__subtitle">Total Products</h5>
-                            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-2">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Sales</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{ IND_money_format($monthlySales) }}</h2>
+                            <p class="text-white mb-0">{{ date("M, Y") }}</p>
                         </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-inr"></i></span>
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-6 col-md-6 col-sm-12 col-xl-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-info"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ $invoice_today }}</h2>
-                                <h5 class="card-widget__subtitle">Today Invoice</h5>
-                            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-3">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Invoice</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{ $yearlyInvoice }}</h2>
+                            <p class="text-white mb-0">Apr, {{ $fromYear }} - Mar, {{ $toYear }}</p>
                         </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-6 col-md-6 col-sm-12 col-xl-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-9">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-ghost"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ $amount_invoice_today }}</h2>
-                                <h5 class="card-widget__subtitle">Total Amount of Invoice</h5>
-                            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Sales</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{ IND_money_format($yearlySales) }}</h2>
+                            <p class="text-white mb-0">Apr, {{ $fromYear }} - Mar, {{ $toYear }}</p>
                         </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-inr"></i></span>
                     </div>
                 </div>
             </div>
