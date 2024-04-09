@@ -674,24 +674,28 @@ class InvoiceController extends Controller
 
                         <table cellspacing="5" cellpadding="0" style="width: 100%; border: 1px solid grey;">
                             <tr>
-                                <td style="width: 18%;height: 15%; text-align: center; padding-top: 10px;" rowspan="4">
+                                <td style="width: 18%; height: 15%; text-align: center; padding-top: 5px;" rowspan="4">
                                     '.$image.'
                                 </td>
-                                <td style="width: 50%; padding:5px 0 0;" colspan="2">
+                                <td style="width: 50%; padding:5px 0 0;" colspan="3">
                                 	<h3 style="text-align: left; font-size: 25pt; margin: 0;">'.$settings->company_name.'</h3>
                                 </td>
-                                
+                                <td style="background: lightgray; padding: 10px 0px 0px 0px; text-align: center;" colspan="2">
+                                	<h5 style="font-size: 14pt;">Tax Invoice</h5>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="3">'.$settings->company_address.'</td>
+                                <td colspan="" style="text-align: left;">[ ] Original</td>
+                                <td colspan="" style="text-align: right;">[ ] Duplicate</td>
                             </tr>
                             <tr>
                                 <td style="width: 45%;" >Mobile No: '.$settings->company_mobile_no.'</td>
-                                <td colspan="2">MSME No:'.$settings->msme_no.'</td>
+                                <td colspan="4">MSME No:'.$settings->msme_no.'</td>
                             </tr>
                             <tr>
                                 <td>GSTIN: '.$settings->company_gstno.'</td>
-                                <td colspan="2">PAN No: '.$settings->company_panno.'</td>
+                                <td colspan="4">PAN No: '.$settings->company_panno.'</td>
                             </tr>
                         </table>
                         <table cellspacing="0" style="width: 100%; margin-top:3px; font-size: 8pt; border: 1px solid grey; margin-bottom:0px;" align="center" >
@@ -702,7 +706,7 @@ class InvoiceController extends Controller
                                             <td style="width: 20%; padding: 2px 0; font-size: 10pt;">
                                                 Name:
                                             </td>
-                                            <td style="width: 80%; padding: 2px 0; font-size: 10pt;">
+                                            <td colspan="3" style="width: 80%; padding: 2px 0; font-size: 10pt;">
                                                 <b>'.$invoice->consignee->partyname.'</b>
                                             </td>
                                         </tr>
@@ -710,7 +714,7 @@ class InvoiceController extends Controller
                                             <td style="width: 20%; padding: 2px 0; font-size: 10pt;">
                                                 Mobile No:
                                             </td>
-                                            <td style="width: 80%; padding: 2px 0; font-size: 10pt;">
+                                            <td colspan="3" style="width: 80%; padding: 2px 0; font-size: 10pt;">
                                                 '.$invoice->consignee->mobile_no.'
                                             </td>
                                         </tr>
@@ -718,7 +722,7 @@ class InvoiceController extends Controller
                                             <td style="width: 20%; padding: 2px 0; font-size: 10pt;">
                                                 Address:
                                             </td>
-                                            <td style="width: 80%; padding: 2px 0; font-size: 10pt;">
+                                            <td colspan="3" style="width: 80%; padding: 2px 0; font-size: 10pt;">
                                                 '.$invoice->consignee->address.'
                                             </td>
                                         </tr>
@@ -726,23 +730,21 @@ class InvoiceController extends Controller
                                             <td style="width: 20%; padding: 2px 0; font-size: 10pt;">
                                                 State:
                                             </td>
-                                            <td style="width: 80%; padding: 2px 0; font-size: 10pt;">
+                                            <td style="width: 40%; padding: 2px 0; font-size: 10pt;">
                                                 '.$invoice->consignee->state.'
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 20%; padding: 2px 0; font-size: 10pt;">
+                                            <td style="width: 30%; padding: 2px 5px; font-size: 10pt; text-align: right;">
                                                 State Code:
                                             </td>
-                                            <td style="width: 80%; padding: 2px 0; font-size: 10pt;">
+                                            <td style="width: 10%; padding: 2px 0; font-size: 10pt;">
                                                 '.$invoice->consignee->state_code.'
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 2px 0; font-size: 10pt;">
+                                            <td style="padding: 2px 0; font-size: 10pt;">
                                                 GSTIN:
                                             </td>
-                                            <td style="width: 80%; padding: 2px 0; font-size: 10pt;">
+                                            <td colspan="3" style="padding: 2px 0; font-size: 10pt;">
                                                 '.$invoice->consignee->gst_no.'
                                             </td>
                                         </tr>
@@ -763,7 +765,7 @@ class InvoiceController extends Controller
                                                 Invoice Date:
                                             </td>
                                             <td style="padding: 2px 0; font-size: 10pt;">
-                                                '.date('d M, Y', strtotime($invoice->invoice_date)).'
+                                                '.date('d-m-Y', strtotime($invoice->invoice_date)).'
                                             </td>
                                         </tr>
                                         <tr>
@@ -805,16 +807,16 @@ class InvoiceController extends Controller
                             </colgroup>
                             <thead>
                                 <tr style="background: lightgray;">
-                                    <th colspan="7" style="text-align: center; padding:8px 0;border: 1px solid grey;"> Item Details </th>
+                                    <th colspan="7" style="font-size: 12pt; text-align: center; padding:8px 0;border: 1px solid grey;"> Item Details </th>
                                 </tr>
                                 <tr>
-                                    <th style="padding:8px 0;border: 1px solid grey;width: 10%;">No.</th>
-                                    <th style="padding:8px 0;text-align: left;padding-left: 5px;border: 1px solid grey;width: 50%;">Item</th>
-                                    <th style="padding:8px 0;border: 1px solid grey;width: 10%;">HSN No.</th>
-                                    <th style="padding:8px 0;border: 1px solid grey;width: 10%;">Packing</th>
-                                    <th style="padding:8px 0;border: 1px solid grey;width: 10%;">Qty (Kg)</th>
-                                    <th style="padding:8px 0;border: 1px solid grey;width: 15%;">Rate</th>
-                                    <th style="padding:8px 0;border: 1px solid grey;padding-right: 5px;text-align: right;width: 15%;">Amount</th>
+                                    <th style="font-size: 11pt; padding:8px 0;border: 1px solid grey;width: 10%;">No.</th>
+                                    <th style="font-size: 11pt; padding:8px 0;text-align: left;padding-left: 5px;border: 1px solid grey;width: 50%;">Item</th>
+                                    <th style="font-size: 11pt; padding:8px 0;border: 1px solid grey;width: 10%;">HSN No.</th>
+                                    <th style="font-size: 11pt; padding:8px 0;border: 1px solid grey;width: 10%;">Packing</th>
+                                    <th style="font-size: 11pt; padding:8px 0;border: 1px solid grey;width: 10%;">Qty (Kg)</th>
+                                    <th style="font-size: 11pt; padding:8px 0;border: 1px solid grey;width: 15%;">Rate</th>
+                                    <th style="font-size: 11pt; padding:8px 0;border: 1px solid grey;padding-right: 5px;text-align: right;width: 15%;">Amount</th>
                                 </tr>
                             </thead>
                             <tbody>';
@@ -824,46 +826,61 @@ class InvoiceController extends Controller
                                     $product = Product::withTrashed()->find($invoice_item->product_id);
 
                                     $HTMLContent .= '<tr>
-                                                        <td style="padding:8px 0; text-align: center; border: 1px solid grey; width: 5%;">'.$no.'</td>
-                                                        <td style="padding:8px 0; padding-left: 5px; border: 1px solid grey; width: 48%;text-align: left">'.$product->title.'</td>
-                                                        <td style="padding:8px 0; text-align: center; border: 1px solid grey; width: 12%;">'.$product->hsn_code.'</td>
-                                                        <td style="padding:8px 0; text-align: center; border: 1px solid grey; width: 20%;">'.$invoice_item->packing_qty.' '.$invoice_item->packingType.' X '.$invoice_item->packing_weight.' Kg</td>
-                                                        <td style="padding:8px 0; text-align: center; border: 1px solid grey; width: 8%;">'.$invoice_item->quantity.'</td>
-                                                        <td style="padding:8px 0; text-align: center; border: 1px solid grey; width: 12%;">'.IND_money_format($invoice_item->price).'</td>
-                                                        <td style="padding:8px 0; text-align: right; border: 1px solid grey; padding-right: 5px; width: 15%;">'.IND_money_format($invoice_item->final_price).'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 5%;">'.$no.'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; padding-left: 5px; border: 1px solid grey; width: 30%;text-align: left">'.$product->title.'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 17%;">'.$product->hsn_code.'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 17%;">'.$invoice_item->packing_qty.' '.$invoice_item->packingType.' X '.$invoice_item->packing_weight.' Kg</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 12%;">'.$invoice_item->quantity.'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 9%;">'.IND_money_format($invoice_item->price).'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: right; border: 1px solid grey; padding-right: 5px; width: 10%;">'.IND_money_format($invoice_item->final_price).'</td>
                                                     </tr>';
                                     $no++;
                                 }
 
+                                if($no < 15){
+                                    $emptyRows = 15 - $no;
+                                    for($r = 0; $r < $emptyRows; $r++){
+                                        $HTMLContent .= '<tr>
+                                                            <td style="padding:16px; border: 1px solid grey;"> </td>
+                                                            <td style="padding:16px; border: 1px solid grey;"> </td>
+                                                            <td style="padding:16px; border: 1px solid grey;"> </td>
+                                                            <td style="padding:16px; border: 1px solid grey;"> </td>
+                                                            <td style="padding:16px; border: 1px solid grey;"> </td>
+                                                            <td style="padding:16px; border: 1px solid grey;"></td>
+                                                            <td style="padding:16px; border: 1px solid grey;"> </td>
+                                                        </tr>';
+                                    }
+                                }
+
                                 $HTMLContent .= '<tr>
-                                                    <th colspan="6" style="padding:10px 0;border: 1px solid grey;">Sub Total</th>
-                                                    <th style="padding:10px 0;border: 1px solid grey;text-align: right;padding-right: 5px">'.IND_money_format($invoice->sub_total).'</th>
+                                                    <th colspan="6" style="font-size: 12pt; padding:10px 0;border: 1px solid grey;">Sub Total</th>
+                                                    <th style="font-size: 12pt; padding:10px 0;border: 1px solid grey;text-align: right;padding-right: 5px">'.IND_money_format($invoice->sub_total).'</th>
                                                 </tr>';
 
                                 $gstPercent = $invoice->gst_percentage;
                                 if( $settings->company_statecode != $invoice->consignee->state_code ){
                                     
                                     $HTMLContent .= '<tr>
-                                                        <th colspan="6" style="padding:10px 0;border: 1px solid grey;">IGST('.$gstPercent.'%)</th>
-                                                        <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->igst_amount).'</th>
+                                                        <th colspan="6" style="font-size: 12pt; padding:10px 0;border: 1px solid grey;">IGST('.$gstPercent.'%)</th>
+                                                        <th style="font-size: 12pt; padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->igst_amount).'</th>
                                                     </tr>';
                                     
                                 } else {
 
                                     $HTMLContent .= '<tr>
-                                                        <th colspan="6" style="padding:10px 0;border: 1px solid grey;">SGST('.$gstPercent.'%)</th>
-                                                        <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->sgst_amount).'</th>
+                                                        <th colspan="6" style="font-size: 12pt; padding:10px 0;border: 1px solid grey;">SGST('.$gstPercent.'%)</th>
+                                                        <th style="font-size: 12pt; padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->sgst_amount).'</th>
                                                     </tr>';
 
                                     $HTMLContent .= '<tr>
-                                                    <th colspan="6" style="padding:10px 0;border: 1px solid grey;">CGST('.$gstPercent.'%)</th>
-                                                    <th style="padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->cgst_amount).'</th>
+                                                    <th colspan="6" style="font-size: 12pt; padding:10px 0;border: 1px solid grey;">CGST('.$gstPercent.'%)</th>
+                                                    <th style="font-size: 12pt; padding:10px 0; border: 1px solid grey; text-align: right; padding-right: 5px">'.IND_money_format($invoice->cgst_amount).'</th>
                                                 </tr>';
                                 }
 
                                 $HTMLContent .= '<tr>
-                                                    <th colspan="6" style="padding:10px 0;border: 1px solid grey;">Grand Total</th>
-                                                    <th style="padding:10px 0;border: 1px solid grey;text-align: right;padding-right: 5px">'.IND_money_format($invoice->final_amount).'</th>
+                                                    <th colspan="6" style="font-size: 12pt; padding:10px 0;border: 1px solid grey;">Grand Total</th>
+                                                    <th style="font-size: 12pt; padding:10px 0;border: 1px solid grey;text-align: right;padding-right: 5px">'.IND_money_format($invoice->final_amount).'</th>
                                                 </tr>
                             </tbody>
                         </table>';
