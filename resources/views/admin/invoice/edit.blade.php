@@ -113,11 +113,11 @@
                             </select>
                         </td>
                         <td width="100px">
-                            <input class="form-control weight_of_packing" id="weight_of_packing{{ $i }}" name="weight_of_packing" type="number" min="1" value="{{ $invoice_item->packing_weight }}">
+                            <input class="form-control weight_of_packing" id="weight_of_packing{{ $i }}" name="weight_of_packing" type="number" min="1" value="{{ round($invoice_item->packing_weight, 0) }}">
                             <label id="weight_of_packing{{ $i }}-error" class="error invalid-feedback animated fadeInDown" for="weight_of_packing{{ $i }}"></label>
                         </td>
                         <td width="100px">
-                            <div class="prse text-center"><span id="quantity{{ $i }}" class="quantity">{{ $invoice_item->quantity }}</span></div>
+                            <div class="prse text-center"><span id="quantity{{ $i }}" class="quantity">{{ round($invoice_item->quantity, 0) }}</span></div>
                             <label id="quantity{{ $i }}-error" class="error invalid-feedback animated fadeInDown" for="quantity{{ $i }}"></label>
                         </td>
                         <td width="200px">

@@ -418,8 +418,8 @@ class InvoiceController extends Controller
                         $table .='<tr>';
                         $table .= '<td style="text-align: center">'.$item.'</td>';
                         $table .= '<td>'.$product_title.'</td>';
-                        $table .= '<td style="text-align: center">'.$invoice_item->packing_qty.' '.$invoice_item->packingType.' X '.$invoice_item->packing_weight.' Kg</td>';
-                        $table .= '<td style="text-align: center">'.$invoice_item->quantity.' Kg</td>';
+                        $table .= '<td style="text-align: center">'.$invoice_item->packing_qty.' '.$invoice_item->packingType.' X '.round($invoice_item->packing_weight, 0).' Kg</td>';
+                        $table .= '<td style="text-align: center">'.round($invoice_item->quantity, 0).' Kg</td>';
                         $table .= '<td style="text-align: center"><i class="fa fa-inr" aria-hidden="true"></i> '.IND_money_format($invoice_item->price).'</td>';
                         $table .= '<td style="text-align: right"><i class="fa fa-inr" aria-hidden="true"></i> '.IND_money_format($invoice_item->final_price).'</td>';
                         $table .= '</tr>';
@@ -829,8 +829,8 @@ class InvoiceController extends Controller
                                                         <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 5%;">'.$no.'</td>
                                                         <td style="font-size: 12pt; padding:8px 0; padding-left: 5px; border: 1px solid grey; width: 30%;text-align: left">'.$product->title.'</td>
                                                         <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 17%;">'.$product->hsn_code.'</td>
-                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 17%;">'.$invoice_item->packing_qty.' '.$invoice_item->packingType.' X '.$invoice_item->packing_weight.' Kg</td>
-                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 12%;">'.$invoice_item->quantity.'</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 17%;">'.$invoice_item->packing_qty.' '.$invoice_item->packingType.' X '.round($invoice_item->packing_weight, 0).' Kg</td>
+                                                        <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 12%;">'.round($invoice_item->quantity, 0).'</td>
                                                         <td style="font-size: 12pt; padding:8px 0; text-align: center; border: 1px solid grey; width: 9%;">'.IND_money_format($invoice_item->price).'</td>
                                                         <td style="font-size: 12pt; padding:8px 0; text-align: right; border: 1px solid grey; padding-right: 5px; width: 10%;">'.IND_money_format($invoice_item->final_price).'</td>
                                                     </tr>';
