@@ -690,12 +690,16 @@ class InvoiceController extends Controller
                                 <td colspan="" style="text-align: right;">[ ] Duplicate</td>
                             </tr>
                             <tr>
-                                <td style="width: 45%;" >Mobile No: '.$settings->company_mobile_no.'</td>
-                                <td colspan="4">MSME No:'.$settings->msme_no.'</td>
+                                <td style="width: 15%;" >Mobile No:</td>
+                                <td style="" >'.$settings->company_mobile_no.'</td>
+                                <td style="width: 15%;" >MSME No:</td>
+                                <td colspan="2">'.$settings->msme_no.'</td>
                             </tr>
                             <tr>
-                                <td>GSTIN: '.$settings->company_gstno.'</td>
-                                <td colspan="4">PAN No: '.$settings->company_panno.'</td>
+                                <td style="width: 15%;">GSTIN:</td>
+                                <td style="">'.$settings->company_gstno.'</td>
+                                <td style="width: 15%;">PAN No:</td>
+                                <td colspan="">'.$settings->company_panno.'</td>
                             </tr>
                         </table>
                         <table cellspacing="0" style="width: 100%; margin-top:3px; font-size: 8pt; border: 1px solid grey; margin-bottom:0px;" align="center" >
