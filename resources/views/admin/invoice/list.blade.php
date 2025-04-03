@@ -269,7 +269,7 @@ function invoice_table(is_clearState=false){
         "destroy": true,
         "processing": true,
         "serverSide": true,
-        "pageLength": 5,
+        "pageLength": 100,
         'stateSave': function(){
             if(is_clearState){
                 return false;
