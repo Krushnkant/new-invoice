@@ -330,46 +330,34 @@ class InvoiceController extends Controller
             $totalData = Invoice::count();
             $totalFiltered = $totalData;
 
-            if(empty($request->input('search.value')))
-            {
-                $Invoices = Invoice::with('invoice_item.product','consignee');
-                if (isset($request->user_id_filter) && $request->user_id_filter!=""){
-                    $Invoices = $Invoices->where('consignee_id',$request->user_id_filter);
-                }
-                if (isset($request->start_date) && $request->start_date!="" && isset($request->end_date) && $request->end_date!=""){
-                    $Invoices = $Invoices->whereRaw("invoice_date between '".$request->start_date."' and '".$request->end_date."'");
-                }
-                $Invoices = $Invoices->offset($start)
-                    ->limit($limit)
-                    ->orderBy($order,$dir)
-                    ->get();
+            $Invoices = Invoice::with('invoice_item.product', 'consignee');
 
-                $totalFiltered = count($Invoices->toArray());
-            } else {
-                $search = $request->input('search.value');
-                $Invoices = Invoice::with('invoice_item.product','consignee');
-                if (isset($request->user_id_filter) && $request->user_id_filter!=""){
-                    $Invoices = $Invoices->where('consignee_id',$request->user_id_filter);
-                }
-                if (isset($request->start_date) && $request->start_date!="" && isset($request->end_date) && $request->end_date!=""){
-                    $Invoices = $Invoices->whereRaw("invoice_date between '".$request->start_date."' and '".$request->end_date."'");
-                }
-                $Invoices = $Invoices->where(function($query) use($search){
-                    $query->where('invoice_no','LIKE',"%{$search}%")
-                        ->orWhere('invoice_date', 'LIKE',"%{$search}%")
-                        // ->orWhere('total_qty', 'LIKE',"%{$search}%")
-                        ->orWhere('final_amount', 'LIKE',"%{$search}%")
-                        ->orWhereHas('consignee_id',function ($Query) use($search) {
-                            $Query->where('partyname', 'Like', '%' . $search . '%');
-                        });
-                    })
-                    ->offset($start)
-                    ->limit($limit)
-                    ->orderBy($order,$dir)
-                    ->get();
-
-                $totalFiltered = count($Invoices->toArray());
+            if (!empty($request->user_id_filter)) {
+                $Invoices = $Invoices->where('consignee_id', $request->user_id_filter);
             }
+
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $Invoices = $Invoices->whereBetween('invoice_date', [$request->start_date, $request->end_date]);
+            }
+
+            if (!empty($request->input('search.value'))) {
+                $search = $request->input('search.value');
+                $Invoices = $Invoices->where(function ($query) use ($search) {
+                    $query->where('invoice_no', 'LIKE', "%{$search}%")
+                        ->orWhere('invoice_date', 'LIKE', "%{$search}%")
+                        ->orWhere('final_amount', 'LIKE', "%{$search}%")
+                        ->orWhereHas('consignee', function ($Query) use ($search) { // Fixed this line
+                            $Query->where('partyname', 'LIKE', '%' . $search . '%');
+                        });
+                });
+            }
+
+            $Invoices = $Invoices->offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
+
+            // $totalFiltered = count($Invoices->toArray());
 
             $data = array();
             if(!empty($Invoices))
